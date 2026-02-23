@@ -1,0 +1,6 @@
+userId,name,email,userType
+U001,Alice Smith,alice@uoguelph.ca,Student
+U002,Bob Jones,bob@uoguelph.ca,Staff
+U003,Charlie Brown,charlie@gmail.com,Guest
+U004,Diana Prince,diana@uoguelph.ca,Student
+U005,Evan Peters,evan@uoguelph.ca,Staff
