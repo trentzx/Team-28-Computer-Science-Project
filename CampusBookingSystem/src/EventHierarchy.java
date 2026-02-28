@@ -1,3 +1,4 @@
+// Make the default event class that include the universal event info
 static class Event {
     int eventId;
     String title;
@@ -7,6 +8,7 @@ static class Event {
     Boolean status;
 }
 
+//Made children classes that use the Event class's variables, but also add their own
 static class Workshop extends Event {
     String topic;
 }
@@ -19,6 +21,7 @@ static class Concert extends Event {
     int ageRestrictment;
 }
 
+//Made a function to add an event
 Event addEvent(Event event) {
     Scanner sc = new Scanner(System.in);
 
@@ -32,8 +35,9 @@ Event addEvent(Event event) {
     event.location = sc.next();
     IO.println("Enter capacity:");
     event.capacity = sc.nextInt();
+    //If capacity is not valid
     if (event.capacity <= 0) {
-        System.exit(0);
+        System.exit(0); //Temporarily exits the program
     }
     // Specific fields
     if (event instanceof Workshop) {
@@ -54,6 +58,7 @@ Event addEvent(Event event) {
     return event;
 }
 
+//This is basically the same as the addEvent function
 Event updateEvent(Event event) {
     Scanner sc = new Scanner(System.in);
 
@@ -89,10 +94,13 @@ Event updateEvent(Event event) {
     return event;
 }
 
+//Sets event status to false
 void cancel(Event event) {
     event.status = false;
 }
 
+//Prints all info of all events
+//This isn't formatted nicely yet
 void listEvents(ArrayList<Event> events) {
     for (Event e : events) {
         IO.println(e.capacity);
@@ -100,6 +108,7 @@ void listEvents(ArrayList<Event> events) {
         IO.println(e.title);
         IO.println(e.dateTime);
         IO.println(e.location);
+        //For specific instances of the Event class
         if (e instanceof Workshop) IO.println(((Workshop) e).topic);
         if (e instanceof Seminar) IO.println(((Seminar) e).speakerName);
         if (e instanceof Concert) IO.println(((Concert) e).ageRestrictment);
@@ -111,6 +120,7 @@ void main() {
 
     events.add(addEvent(new Workshop()));
 
+    //Sets the event at some position in the array (0 in this case) to new variables
     events.set(0, updateEvent(events.get(0)));
 
     cancel(events.get(0));
