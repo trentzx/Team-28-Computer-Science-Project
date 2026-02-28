@@ -28,6 +28,15 @@ public class EventHierarchy {
     //Made a function to add an event
     Event addEvent(Event event) {
         Scanner sc = new Scanner(System.in);
+        String type;
+
+        IO.println("What type of event is it?");
+        type = sc.nextLine();
+        switch (type) {
+            case "Workshop" -> event = new Workshop();
+            case "Seminar" -> event = new Seminar();
+            case "Concert" -> event = new Concert();
+        }
 
         IO.println("Enter ID:");
         event.eventId = sc.nextInt();
@@ -44,15 +53,22 @@ public class EventHierarchy {
             System.exit(0); //Temporarily exits the program
         }
         // Specific fields
-        if (event instanceof Workshop) {
-            IO.println("Enter topic:");
-            ((Workshop) event).topic = sc.next();
-        } else if (event instanceof Seminar) {
-            IO.println("Enter speaker name:");
-            ((Seminar) event).speakerName = sc.next();
-        } else if (event instanceof Concert) {
-            IO.println("Enter age restriction:");
-            ((Concert) event).ageRestrictment = sc.nextInt();
+        switch (event) {
+            case Workshop workshop -> {
+                IO.println("Enter topic:");
+                workshop.topic = sc.next();
+            }
+            case Seminar seminar -> {
+                IO.println("Enter speaker name:");
+                seminar.speakerName = sc.next();
+            }
+            case Concert concert -> {
+                IO.println("Enter age restriction:");
+                concert.ageRestrictment = sc.nextInt();
+            }
+            //This needs to be here to fill all possible cases, even though it will never happen
+            default -> {
+            }
         }
 
         IO.println("Enter status (true/false):");
@@ -65,35 +81,58 @@ public class EventHierarchy {
     //This is basically the same as the addEvent function
     Event updateEvent(Event event) {
         Scanner sc = new Scanner(System.in);
+        String field;
 
-        IO.println("Enter ID:");
-        event.eventId = sc.nextInt();
-        IO.println("Enter title:");
-        event.title = sc.next();
-        IO.println("Enter date/time:");
-        event.dateTime = sc.nextInt();
-        IO.println("Enter location:");
-        event.location = sc.next();
-        IO.println("Enter capacity:");
-        event.capacity = sc.nextInt();
-        if (event.capacity <= 0) {
-            System.exit(0);
+        IO.println("What field would you like to update?");
+        field = sc.next();
+        //All the cases for changing each individual field
+        switch (field) {
+            case "ID" -> {
+                IO.println("Enter ID:");
+                event.eventId = sc.nextInt();
+            }
+            case "Title" -> {
+                IO.println("Enter title:");
+                event.title = sc.next();
+            }
+            case "Date" -> {
+                IO.println("Enter date/time:");
+                event.dateTime = sc.nextInt();
+            }
+            case "Location" -> {
+                IO.println("Enter location:");
+                event.location = sc.next();
+            }
+            case "Capacity" -> {
+                IO.println("Enter capacity:");
+                event.capacity = sc.nextInt();
+                if (event.capacity <= 0) {
+                    System.exit(0);
+                }
+            }
+            case "Topic", "Speaker", "Age" -> {
+                // Specific fields
+                switch (event) {
+                    case Workshop workshop -> {
+                        IO.println("Enter topic:");
+                        workshop.topic = sc.next();
+                    }
+                    case Seminar seminar -> {
+                        IO.println("Enter speaker name:");
+                        seminar.speakerName = sc.next();
+                    }
+                    case Concert concert -> {
+                        IO.println("Enter age restriction:");
+                        concert.ageRestrictment = sc.nextInt();
+                    }
+                    default -> {
+                    }
+                }
+            }
         }
-        // Specific fields
-        if (event instanceof Workshop) {
-            IO.println("Enter topic:");
-            ((Workshop) event).topic = sc.next();
-        } else if (event instanceof Seminar) {
-            IO.println("Enter speaker name:");
-            ((Seminar) event).speakerName = sc.next();
-        } else if (event instanceof Concert) {
-            IO.println("Enter age restriction:");
-            ((Concert) event).ageRestrictment = sc.nextInt();
-        }
-
-        IO.println("Enter status (true/false):");
-
-        event.status = sc.nextBoolean();
+        IO.println("Would you like to change another field?");
+        String check = sc.next();
+        if(check.equals("Yes")) {updateEvent(event);}
 
         return event;
     }
@@ -104,7 +143,7 @@ public class EventHierarchy {
     }
 
     //Prints all info of all events
-//This isn't formatted nicely yet
+//This isn't formatted nicely
     void listEvents(ArrayList<Event> events) {
         for (Event e : events) {
             IO.println(e.capacity);
@@ -146,12 +185,14 @@ public class EventHierarchy {
     public void main(String[] args) {
         ArrayList<Event> events = new ArrayList<>();
 
-        events.add(addEvent(new Workshop()));
+        events.add(addEvent(new Event()));
 
         searchEvents(events);
 
         //Sets the event at some position in the array (0 in this case) to new variables
         events.set(0, updateEvent(events.get(0)));
+
+        searchEvents(events);
 
         cancel(events.get(0));
 
