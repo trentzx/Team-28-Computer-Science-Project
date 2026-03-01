@@ -29,6 +29,8 @@ public class EventHierarchy {
 
         public int getCapacity() {return capacity;}
         public void setCapacity(int capacity) {
+            //Better to have this check inside the setter
+            //If capacity is incorrect it exits the program temporarily
             if(capacity <= 0){System.exit(0);}
             this.capacity = capacity;
         }
@@ -64,9 +66,11 @@ public class EventHierarchy {
 
     //Made a function to add an event
     Event addEvent(Event event) {
+        //Temporary Scanner to test the program
         Scanner sc = new Scanner(System.in);
         String type;
 
+        //Asks user what type of event
         IO.println("What type of event is it?");
         type = sc.nextLine();
         switch (type) {
@@ -212,6 +216,8 @@ public class EventHierarchy {
     }
 
     public static void main(String[] args) {
+        //couldn't use non-static methods in main
+        //Created a new function "run" to do things, and ran it using an object
         new EventHierarchy().run();
     }
     void run(){
