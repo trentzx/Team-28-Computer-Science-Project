@@ -50,11 +50,17 @@ public class EventManagementController implements Initializable {
         filterTypeCombo.getItems().addAll("All Types", "Workshop", "Seminar", "Concert");
         filterTypeCombo.getSelectionModel().selectFirst();
 
-        masterEventRegistry.addAll(
-                new Event("E101", "Intro to Git", "2026-02-12T14:30", "Library 101", 40, "Active", "Workshop"),
-                new Event("E205", "AI Safety Talk", "2026-03-01T10:00", "MACN 113", 120, "Active", "Seminar"),
-                new Event("E330", "Winter Concert", "2026-03-10T19:00", "UC Hall", 300, "Active", "Concert")
-        );
+        for (model.events.Event e : service.SystemData.getInstance().getEvents()) {
+            masterEventRegistry.add(new Event(
+                    e.getEventId(),
+                    e.getTitle(),
+                    e.getDateTime(),
+                    e.getLocation(),
+                    e.getCapacity(),
+                    e.getStatus(),
+                    e.getEventType()
+            ));
+        }
     }
 
     private void initializeSearchAndFilterMechanics() {

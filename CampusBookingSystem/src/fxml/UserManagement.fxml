@@ -1,23 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<VBox xmlns:fx="http://javafx.com/fxml" spacing="10" style="-fx-padding: 20;">
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.campusbooking.controllers.UserManagementController"
+      spacing="10" style="-fx-padding: 20;">
+
     <Label text="User Management" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
-    <Label text="Add User"/>
+
     <HBox spacing="10">
         <TextField fx:id="userIdField" promptText="User ID"/>
         <TextField fx:id="nameField" promptText="Name"/>
         <TextField fx:id="emailField" promptText="Email"/>
         <ComboBox fx:id="userTypeCombo" promptText="Type"/>
-        <Button text="Add User"/>
+        <Button text="Add User" onAction="#handleAddUser"/>
     </HBox>
-    <Label text="All Users"/>
-    <TableView fx:id="userTable">
+
+    <Label fx:id="statusLabel" text="" style="-fx-text-fill: red;"/>
+
+    <TableView fx:id="userTableView" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn text="User ID"/>
-            <TableColumn text="Name"/>
-            <TableColumn text="Email"/>
-            <TableColumn text="Type"/>
+            <TableColumn fx:id="colUserId" text="User ID"/>
+            <TableColumn fx:id="colName" text="Name"/>
+            <TableColumn fx:id="colEmail" text="Email"/>
+            <TableColumn fx:id="colType" text="Type"/>
         </columns>
     </TableView>
 </VBox>
