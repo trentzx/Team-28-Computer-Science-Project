@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" spacing="10" style="-fx-padding: 20;">
+    <Label text="Booking Management" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+    <HBox spacing="10">
+        <TextField fx:id="bookingUserIdField" promptText="User ID"/>
+        <TextField fx:id="bookingEventIdField" promptText="Event ID"/>
+        <Button text="Book Event"/>
+        <Button text="Cancel Booking"/>
+    </HBox>
+    <TableView fx:id="bookingTable">
+        <columns>
+            <TableColumn text="Booking ID"/>
+            <TableColumn text="User ID"/>
+            <TableColumn text="Event ID"/>
+            <TableColumn text="Status"/>
+        </columns>
+    </TableView>
+</VBox>
