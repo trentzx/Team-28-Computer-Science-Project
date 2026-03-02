@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+
+<VBox spacing="15.0" style="-fx-background-color: #ffffff; -fx-padding: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.campusbooking.controllers.EventManagementController">
+    <HBox spacing="10.0" alignment="CENTER_LEFT">
+        <Label text="Search Events:" />
+        <TextField fx:id="searchTitleField" promptText="Enter event title..." prefWidth="200.0" />
+
+        <Label text="Filter by Type:" />
+        <ComboBox fx:id="filterTypeCombo" prefWidth="150.0" />
+
+        <Region HBox.hgrow="ALWAYS" />
+
+        <Button text="Cancel Selected Event" onAction="#handleCancelEventAction" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+    </HBox>
+
+    <TableView fx:id="eventTableView" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colId" text="Event ID" prefWidth="80.0" />
+            <TableColumn fx:id="colTitle" text="Title" prefWidth="200.0" />
+            <TableColumn fx:id="colDate" text="Date &amp; Time" prefWidth="150.0" />
+            <TableColumn fx:id="colLocation" text="Location" prefWidth="150.0" />
+            <TableColumn fx:id="colCapacity" text="Capacity" prefWidth="80.0" />
+            <TableColumn fx:id="colStatus" text="Status" prefWidth="100.0" />
+            <TableColumn fx:id="colType" text="Type" prefWidth="100.0" />
+        </columns>
+    </TableView>
+</VBox>
