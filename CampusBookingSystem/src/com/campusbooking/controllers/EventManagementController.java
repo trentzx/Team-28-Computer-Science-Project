@@ -1,5 +1,7 @@
 package com.campusbooking.controllers;
 
+import model.events.*;
+
 import com.campusbooking.models.Event; // This import will now work correctly
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
