@@ -8,6 +8,7 @@ public class SystemData {
     private static SystemData instance;
     private List<User> users = new ArrayList<>();
     private List<Event> events = new ArrayList<>();
+    private BookingService bookingService;
 
     private SystemData() {
         DataLoader loader = new DataLoader();
@@ -15,6 +16,7 @@ public class SystemData {
         loader.loadEvents("events.csv");
         users = loader.getUsers();
         events = loader.getEvents();
+        bookingService = new BookingService();
     }
 
     public static SystemData getInstance() {
@@ -24,6 +26,7 @@ public class SystemData {
 
     public List<User> getUsers() { return users; }
     public List<Event> getEvents() { return events; }
+    public BookingService getBookingService() { return bookingService; }
 
     public void addUser(User user) { users.add(user); }
     public void addEvent(Event event) { events.add(event); }

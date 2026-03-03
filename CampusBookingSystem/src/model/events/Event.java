@@ -1,6 +1,7 @@
 package model.events;
 
 public abstract class Event {
+    //Atritbutes
     private String eventId;
     private String title;
     private String dateTime;
@@ -8,6 +9,7 @@ public abstract class Event {
     private int capacity;
     private String status;
 
+    //Constructor
     public Event(String eventId, String title, String dateTime, String location, int capacity, String status) {
         this.eventId = eventId;
         this.title = title;
@@ -17,6 +19,7 @@ public abstract class Event {
         this.status = status;
     }
 
+    //Getters and Setters
     public String getEventId() { return eventId; }
     public void setEventId(String eventId) { this.eventId = eventId; }
 

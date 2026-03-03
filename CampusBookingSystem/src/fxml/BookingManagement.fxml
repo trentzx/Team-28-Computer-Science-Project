@@ -1,20 +1,33 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<VBox xmlns:fx="http://javafx.com/fxml" spacing="10" style="-fx-padding: 20;">
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.campusbooking.controllers.BookingManagementController"
+      spacing="10" style="-fx-padding: 20;">
+
     <Label text="Booking Management" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+
     <HBox spacing="10">
+        <Label text="Book an Event:"/>
         <TextField fx:id="bookingUserIdField" promptText="User ID"/>
         <TextField fx:id="bookingEventIdField" promptText="Event ID"/>
-        <Button text="Book Event"/>
-        <Button text="Cancel Booking"/>
+        <Button text="Book Event" onAction="#handleBookEvent"/>
     </HBox>
-    <TableView fx:id="bookingTable">
+
+    <HBox spacing="10">
+        <Label text="Cancel a Booking:"/>
+        <TextField fx:id="cancelBookingIdField" promptText="Booking ID"/>
+        <Button text="Cancel Booking" onAction="#handleCancelBooking"/>
+    </HBox>
+
+    <Label fx:id="statusLabel" text="" style="-fx-text-fill: green;"/>
+
+    <TableView fx:id="bookingTable" VBox.vgrow="ALWAYS">
         <columns>
-            <TableColumn text="Booking ID"/>
-            <TableColumn text="User ID"/>
-            <TableColumn text="Event ID"/>
-            <TableColumn text="Status"/>
+            <TableColumn fx:id="colBookingId" text="Booking ID"/>
+            <TableColumn fx:id="colUserId" text="User ID"/>
+            <TableColumn fx:id="colEventId" text="Event ID"/>
+            <TableColumn fx:id="colStatus" text="Status"/>
         </columns>
     </TableView>
 </VBox>
