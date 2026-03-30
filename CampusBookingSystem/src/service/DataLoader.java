@@ -22,11 +22,11 @@ public class DataLoader {
     private static final DateTimeFormatter DT_FMT =
             DateTimeFormatter.ofPattern("yyyy-MM-dd'T'HH:mm");
 
-    // ── Users ────────────────────────────────────────────────────────────────
+    // ── Users
 
-    /**
-     * Reads users.csv and creates Student, Staff, or Guest objects.
-     * Header: userId,name,email,userType
+    /*
+      Reads users.csv and creates Student, Staff, or Guest objects.
+      Header: userId,name,email,userType
      */
     public void loadUsers(String filename) {
         try (BufferedReader br = new BufferedReader(new FileReader(filename))) {

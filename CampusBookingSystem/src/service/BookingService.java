@@ -6,9 +6,9 @@ import model.users.User;
 
 import java.util.*;
 
-/**
- * BookingService governs the complete booking lifecycle:
- * creating, cancelling, waitlist promotion, and roster queries.
+/*
+  BookingService governs the complete booking lifecycle:
+  creating, cancelling, waitlist promotion, and roster queries.
  */
 public class BookingService {
 
@@ -22,13 +22,13 @@ public class BookingService {
 
     private int bookingCounter = 1;
 
-    // ── Roster reconstruction from loaded CSV bookings ────────────────────────
+    // Roster reconstruction from loaded CSV bookings
 
-    /**
-     * Called by SystemData after loading bookings.csv so that the in-memory
-     * rosters match the persisted state.
-     * Waitlist order is determined by createdAt (earliest first) among
-     * all bookings with status Waitlisted.
+    /*
+      Called by SystemData after loading bookings.csv so that the in-memory
+      rosters match the persisted state.
+      Waitlist order is determined by createdAt (earliest first) among
+      all bookings with status Waitlisted.
      */
     public void reconstructRosters(List<Booking> loadedBookings, List<Event> events) {
         this.bookings.addAll(loadedBookings);
@@ -70,16 +70,16 @@ public class BookingService {
         }
     }
 
-    // ── Book an event ─────────────────────────────────────────────────────────
+    //Book Event
 
-    /**
-     * Creates a booking for the given user and event, enforcing all rules:
-     *  - Event must be Active
-     *  - No duplicate bookings
-     *  - Per-type booking limits (Student 3 / Staff 5 / Guest 1)
-     *  - Confirmed if capacity available, Waitlisted if full
-     *
-     * @return human-readable result message
+    /*
+      Creates a booking for the given user and event, enforcing all rules:
+       - Event must be Active
+       - No duplicate bookings
+       - Per-type booking limits (Student 3 / Staff 5 / Guest 1)
+       - Confirmed if capacity available, Waitlisted if full
+
+      @return human-readable result message
      */
     public String bookEvent(User user, Event event) {
         String userId  = user.getUserId();
@@ -121,13 +121,13 @@ public class BookingService {
         return "Booking " + bookingId + " created with status: " + status + ".";
     }
 
-    // ── Cancel a booking ──────────────────────────────────────────────────────
+    //  Cancel a booking
 
-    /**
-     * Cancels a booking. If it was Confirmed the first waitlisted user is
-     * automatically promoted to Confirmed.
-     *
-     * @return human-readable result message (includes promotion notice if applicable)
+    /*
+      Cancels a booking. If it was Confirmed the first waitlisted user is
+      automatically promoted to Confirmed.
+
+     @return human-readable result message (includes promotion notice if applicable)
      */
     public String cancelBooking(String bookingId) {
         Booking booking = findBookingById(bookingId);
@@ -164,11 +164,11 @@ public class BookingService {
         return "Booking " + bookingId + " has been cancelled.";
     }
 
-    // ── Cancel all bookings for an event (called when event is cancelled) ─────
+    //  Cancel all bookings for an event (called when event is cancelled)
 
-    /**
-     * Sets every Confirmed and Waitlisted booking for the given event to Cancelled
-     * and clears the waitlist. Called automatically when an event is cancelled.
+    /*
+      Sets every Confirmed and Waitlisted booking for the given event to Cancelled
+      and clears the waitlist. Called automatically when an event is cancelled.
      */
     public void cancelAllBookingsForEvent(String eventId) {
         for (Booking b : bookings) {
@@ -181,7 +181,7 @@ public class BookingService {
         waitlistRoster.getOrDefault(eventId, new LinkedList<>()).clear();
     }
 
-    // ── Queries ───────────────────────────────────────────────────────────────
+    //  Queries
 
     public List<Booking> getBookingsForUser(String userId) {
         List<Booking> result = new ArrayList<>();
@@ -201,7 +201,7 @@ public class BookingService {
 
     public List<Booking> getAllBookings() { return bookings; }
 
-    // ── Helpers ───────────────────────────────────────────────────────────────
+    //  Helpers
 
     private int countConfirmedBookings(String userId) {
         int count = 0;
