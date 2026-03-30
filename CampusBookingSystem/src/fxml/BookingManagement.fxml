@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.campusbooking.controllers.BookingManagementController"
+      spacing="12" style="-fx-padding: 20; -fx-background-color: #f9f9f9;">
+
+    <Label text="Booking Management" style="-fx-font-size: 22; -fx-font-weight: bold;"/>
+
+    <!-- ── Book an Event ─────────────────────────────────────────────── -->
+    <Label text="Book an Event" style="-fx-font-weight: bold;"/>
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="bookingUserIdField"  promptText="User ID"  prefWidth="140"/>
+        <TextField fx:id="bookingEventIdField" promptText="Event ID" prefWidth="140"/>
+        <Button text="Book Event"        onAction="#handleBookEvent"
+                style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+        <Button text="View User Bookings" onAction="#handleViewUserBookings"
+                style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+    </HBox>
+
+    <Separator/>
+
+    <!-- ── Cancel a Booking ──────────────────────────────────────────── -->
+    <Label text="Cancel a Booking" style="-fx-font-weight: bold;"/>
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="cancelBookingIdField" promptText="Booking ID" prefWidth="140"/>
+        <Button text="Cancel Booking" onAction="#handleCancelBooking"
+                style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+        <Button text="Show All Bookings" onAction="#handleShowAllBookings"/>
+    </HBox>
+
+    <Label fx:id="statusLabel" text="" style="-fx-text-fill: #333; -fx-font-weight: bold;"/>
+
+    <Separator/>
+
+    <!-- ── Booking Table ─────────────────────────────────────────────── -->
+    <TableView fx:id="bookingTable" VBox.vgrow="ALWAYS">
+        <columns>
+            <TableColumn fx:id="colBookingId" text="Booking ID" prefWidth="100"/>
+            <TableColumn fx:id="colUserId"    text="User ID"    prefWidth="100"/>
+            <TableColumn fx:id="colEventId"   text="Event ID"   prefWidth="100"/>
+            <TableColumn fx:id="colStatus"    text="Status"     prefWidth="120"/>
+        </columns>
+    </TableView>
+
+</VBox>

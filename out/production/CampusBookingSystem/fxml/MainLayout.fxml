@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.*?>
+<?import javafx.scene.control.*?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.text.*?>
+
+<BorderPane fx:id="mainBorderPane" prefHeight="800.0" prefWidth="1280.0" style="-fx-background-color: #f4f4f4;" xmlns="http://javafx.com/javafx/17.0.12" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.campusbooking.controllers.MainLayoutController">
+    <left>
+        <VBox prefWidth="260.0" spacing="20.0" style="-fx-background-color: #2c3e50; -fx-effect: dropshadow(three-pass-box, rgba(0,0,0,0.4), 10, 0, 0, 0);" BorderPane.alignment="CENTER">
+            <padding>
+                <Insets bottom="30.0" left="25.0" right="25.0" top="50.0" />
+            </padding>
+            <children>
+                <Label text="System Dashboard" textFill="#ecf0f1">
+                    <font>
+                        <Font name="Segue UI Bold" size="22.0" />
+                    </font>
+                    <VBox.margin>
+                        <Insets bottom="40.0" />
+                    </VBox.margin>
+                </Label>
+                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleUserManagementNavigation" prefHeight="45.0" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-cursor: hand;" text="User Administration" />
+                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleEventManagementNavigation" prefHeight="45.0" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-cursor: hand;" text="Event Management" />
+                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleBookingManagementNavigation" prefHeight="45.0" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-cursor: hand;" text="Booking Operations" />
+                <Button maxWidth="Infinity" mnemonicParsing="false" onAction="#handleWaitlistManagementNavigation" prefHeight="45.0" style="-fx-background-color: #34495e; -fx-text-fill: white; -fx-cursor: hand;" text="Waitlist Integrity" />
+            </children>
+        </VBox>
+    </left>
+</BorderPane>
