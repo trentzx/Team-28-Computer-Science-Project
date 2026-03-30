@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
+<VBox xmlns:fx="http://javafx.com/fxml" spacing="10" style="-fx-padding: 20;">
+    <Label text="Waitlist Management" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
+    <HBox spacing="10">
+        <TextField fx:id="waitlistEventIdField" promptText="Event ID"/>
+        <Button text="View Waitlist"/>
+    </HBox>
+    <TableView fx:id="waitlistTable">
+        <columns>
+            <TableColumn text="Position"/>
+            <TableColumn text="User ID"/>
+            <TableColumn text="Booking ID"/>
+            <TableColumn text="Timestamp"/>
+        </columns>
+    </TableView>
+</VBox>
