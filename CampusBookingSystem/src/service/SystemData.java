@@ -1,22 +1,36 @@
 package service;
 
-import model.users.*;
-import model.events.*;
-import java.util.*;
+import model.bookings.Booking;
+import model.events.Event;
+import model.users.User;
 
+import java.util.List;
+
+/**
+ * SystemData is the single source of truth for all runtime data.
+ * It loads users, events, and bookings from CSV at startup and
+ * exposes them to every controller through a singleton.
+ */
 public class SystemData {
+
     private static SystemData instance;
-    private List<User> users = new ArrayList<>();
-    private List<Event> events = new ArrayList<>();
-    private BookingService bookingService;
+
+    private final List<User>    users;
+    private final List<Event>   events;
+    private final BookingService bookingService;
 
     private SystemData() {
         DataLoader loader = new DataLoader();
         loader.loadUsers("users.csv");
         loader.loadEvents("events.csv");
-        users = loader.getUsers();
+        loader.loadBookings("bookings.csv");
+
+        users  = loader.getUsers();
         events = loader.getEvents();
+
         bookingService = new BookingService();
+        // Rebuild in-memory rosters from the loaded bookings
+        bookingService.reconstructRosters(loader.getBookings(), events);
     }
 
     public static SystemData getInstance() {
@@ -24,11 +38,13 @@ public class SystemData {
         return instance;
     }
 
-    public List<User> getUsers() { return users; }
-    public List<Event> getEvents() { return events; }
+    // ── Accessors ─────────────────────────────────────────────────────────────
+
+    public List<User>    getUsers()         { return users; }
+    public List<Event>   getEvents()        { return events; }
     public BookingService getBookingService() { return bookingService; }
 
-    public void addUser(User user) { users.add(user); }
+    public void addUser(User user)   { users.add(user); }
     public void addEvent(Event event) { events.add(event); }
 
     public User findUserById(String userId) {
@@ -43,5 +59,13 @@ public class SystemData {
             if (e.getEventId().equals(eventId)) return e;
         }
         return null;
+    }
+
+    public boolean userIdExists(String userId) {
+        return findUserById(userId) != null;
+    }
+
+    public boolean eventIdExists(String eventId) {
+        return findEventById(eventId) != null;
     }
 }

@@ -1,29 +1,89 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<?import javafx.scene.control.*?>
 <?import javafx.scene.layout.*?>
+<?import javafx.scene.control.*?>
 
-<VBox spacing="15.0" style="-fx-background-color: #ffffff; -fx-padding: 20;" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.campusbooking.controllers.EventManagementController">
-    <HBox spacing="10.0" alignment="CENTER_LEFT">
-        <Label text="Search Events:" />
-        <TextField fx:id="searchTitleField" promptText="Enter event title..." prefWidth="200.0" />
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.campusbooking.controllers.EventManagementController"
+      spacing="10" style="-fx-padding: 20; -fx-background-color: #f9f9f9;">
 
-        <Label text="Filter by Type:" />
-        <ComboBox fx:id="filterTypeCombo" prefWidth="150.0" />
+    <Label text="Event Management" style="-fx-font-size: 22; -fx-font-weight: bold;"/>
 
-        <Region HBox.hgrow="ALWAYS" />
-
-        <Button text="Cancel Selected Event" onAction="#handleCancelEventAction" style="-fx-background-color: #e74c3c; -fx-text-fill: white;" />
+    <!-- ── Search and Filter ─────────────────────────────────────────── -->
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <Label text="Search:"/>
+        <TextField fx:id="searchTitleField" promptText="Event title..." prefWidth="200"/>
+        <Label text="Filter by Type:"/>
+        <ComboBox  fx:id="filterTypeCombo"  prefWidth="140"/>
     </HBox>
 
-    <TableView fx:id="eventTableView" VBox.vgrow="ALWAYS">
+    <!-- ── Event Table ───────────────────────────────────────────────── -->
+    <TableView fx:id="eventTableView" VBox.vgrow="ALWAYS" prefHeight="220">
         <columns>
-            <TableColumn fx:id="colId" text="Event ID" prefWidth="80.0" />
-            <TableColumn fx:id="colTitle" text="Title" prefWidth="200.0" />
-            <TableColumn fx:id="colDate" text="Date &amp; Time" prefWidth="150.0" />
-            <TableColumn fx:id="colLocation" text="Location" prefWidth="150.0" />
-            <TableColumn fx:id="colCapacity" text="Capacity" prefWidth="80.0" />
-            <TableColumn fx:id="colStatus" text="Status" prefWidth="100.0" />
-            <TableColumn fx:id="colType" text="Type" prefWidth="100.0" />
+            <TableColumn fx:id="colId"       text="Event ID"   prefWidth="80"/>
+            <TableColumn fx:id="colTitle"    text="Title"      prefWidth="180"/>
+            <TableColumn fx:id="colDate"     text="Date/Time"  prefWidth="140"/>
+            <TableColumn fx:id="colLocation" text="Location"   prefWidth="130"/>
+            <TableColumn fx:id="colCapacity" text="Capacity"   prefWidth="75"/>
+            <TableColumn fx:id="colStatus"   text="Status"     prefWidth="90"/>
+            <TableColumn fx:id="colType"     text="Type"       prefWidth="90"/>
         </columns>
     </TableView>
+
+    <Separator/>
+
+    <!-- ── Create / Update Form ──────────────────────────────────────── -->
+    <Label text="Create / Update Event  (select a row to auto-fill for update)"
+           style="-fx-font-weight: bold;"/>
+
+    <GridPane hgap="10" vgap="8">
+        <Label text="Event ID:"       GridPane.columnIndex="0" GridPane.rowIndex="0"/>
+        <TextField fx:id="formEventId"  promptText="e.g. E401"
+                   GridPane.columnIndex="1" GridPane.rowIndex="0" prefWidth="160"/>
+
+        <Label text="Title:"          GridPane.columnIndex="2" GridPane.rowIndex="0"/>
+        <TextField fx:id="formTitle"    promptText="Event title"
+                   GridPane.columnIndex="3" GridPane.rowIndex="0" prefWidth="200"/>
+
+        <Label text="Date/Time:"      GridPane.columnIndex="0" GridPane.rowIndex="1"/>
+        <TextField fx:id="formDateTime" promptText="yyyy-MM-ddTHH:mm"
+                   GridPane.columnIndex="1" GridPane.rowIndex="1" prefWidth="160"/>
+
+        <Label text="Location:"       GridPane.columnIndex="2" GridPane.rowIndex="1"/>
+        <TextField fx:id="formLocation" promptText="e.g. Library 101"
+                   GridPane.columnIndex="3" GridPane.rowIndex="1" prefWidth="200"/>
+
+        <Label text="Capacity:"       GridPane.columnIndex="0" GridPane.rowIndex="2"/>
+        <TextField fx:id="formCapacity" promptText="Must be > 0"
+                   GridPane.columnIndex="1" GridPane.rowIndex="2" prefWidth="160"/>
+
+        <Label text="Event Type:"     GridPane.columnIndex="2" GridPane.rowIndex="2"/>
+        <ComboBox  fx:id="formEventType" prefWidth="140"
+                   GridPane.columnIndex="3" GridPane.rowIndex="2"/>
+
+        <Label fx:id="formTypeSpecificLabel" text="Type-Specific Field:"
+               GridPane.columnIndex="0" GridPane.rowIndex="3"/>
+        <TextField fx:id="formTypeSpecific" promptText="Topic / Speaker / Age Restriction"
+                   GridPane.columnIndex="1" GridPane.rowIndex="3"
+                   GridPane.columnSpan="3"  prefWidth="400"/>
+    </GridPane>
+
+    <HBox spacing="10">
+        <Button text="Create Event"  onAction="#handleCreateEvent"
+                style="-fx-background-color: #2ecc71; -fx-text-fill: white;"/>
+        <Button text="Update Event"  onAction="#handleUpdateEvent"
+                style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
+        <Button text="Cancel Event"  onAction="#handleCancelEvent"
+                style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+        <Button text="View Roster"   onAction="#handleViewRoster"
+                style="-fx-background-color: #9b59b6; -fx-text-fill: white;"/>
+    </HBox>
+
+    <Label fx:id="statusLabel" text="" style="-fx-text-fill: #333;"/>
+
+    <!-- ── Roster View ────────────────────────────────────────────────── -->
+    <Separator/>
+    <Label text="Event Roster (Confirmed + Waitlist)" style="-fx-font-weight: bold;"/>
+    <TextArea fx:id="rosterArea" editable="false" prefHeight="130"
+              style="-fx-font-family: monospace;" wrapText="false"/>
+
 </VBox>

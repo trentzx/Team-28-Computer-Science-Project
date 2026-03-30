@@ -1,18 +1,43 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <?import javafx.scene.layout.*?>
 <?import javafx.scene.control.*?>
-<VBox xmlns:fx="http://javafx.com/fxml" spacing="10" style="-fx-padding: 20;">
-    <Label text="Waitlist Management" style="-fx-font-size: 24; -fx-font-weight: bold;"/>
-    <HBox spacing="10">
-        <TextField fx:id="waitlistEventIdField" promptText="Event ID"/>
-        <Button text="View Waitlist"/>
+
+<VBox xmlns:fx="http://javafx.com/fxml"
+      fx:controller="com.campusbooking.controllers.WaitlistManagementController"
+      spacing="12" style="-fx-padding: 20; -fx-background-color: #f9f9f9;">
+
+    <Label text="Waitlist Management" style="-fx-font-size: 22; -fx-font-weight: bold;"/>
+
+    <!-- ── View Waitlist ─────────────────────────────────────────────── -->
+    <Label text="View Event Waitlist" style="-fx-font-weight: bold;"/>
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="waitlistEventIdField" promptText="Event ID" prefWidth="160"/>
+        <Button text="View Waitlist" onAction="#handleViewWaitlist"
+                style="-fx-background-color: #3498db; -fx-text-fill: white;"/>
     </HBox>
-    <TableView fx:id="waitlistTable">
+
+    <!-- ── Waitlist Table ────────────────────────────────────────────── -->
+    <TableView fx:id="waitlistTable" VBox.vgrow="ALWAYS" prefHeight="250">
         <columns>
-            <TableColumn text="Position"/>
-            <TableColumn text="User ID"/>
-            <TableColumn text="Booking ID"/>
-            <TableColumn text="Timestamp"/>
+            <TableColumn fx:id="colPosition"  text="#"          prefWidth="40"/>
+            <TableColumn fx:id="colUserId"    text="User ID"    prefWidth="110"/>
+            <TableColumn fx:id="colBookingId" text="Booking ID" prefWidth="110"/>
+            <TableColumn fx:id="colTimestamp" text="Queued At"  prefWidth="180"/>
         </columns>
     </TableView>
+
+    <Separator/>
+
+    <!-- ── Cancel a Waitlisted Booking ───────────────────────────────── -->
+    <Label text="Remove a Waitlisted Booking" style="-fx-font-weight: bold;"/>
+    <HBox spacing="10" alignment="CENTER_LEFT">
+        <TextField fx:id="cancelWaitlistBookingIdField" promptText="Booking ID" prefWidth="160"/>
+        <Button text="Cancel Waitlisted Booking" onAction="#handleCancelWaitlistedBooking"
+                style="-fx-background-color: #e74c3c; -fx-text-fill: white;"/>
+    </HBox>
+
+    <!-- ── Status / Promotion notice ─────────────────────────────────── -->
+    <Label fx:id="statusLabel" text="" wrapText="true"
+           style="-fx-text-fill: #333; -fx-font-weight: bold;"/>
+
 </VBox>

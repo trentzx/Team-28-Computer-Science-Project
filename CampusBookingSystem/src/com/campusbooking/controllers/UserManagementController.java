@@ -6,119 +6,148 @@ import javafx.fxml.FXML;
 import javafx.fxml.Initializable;
 import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
+import model.bookings.Booking;
 import model.users.*;
+import service.SystemData;
 
 import java.net.URL;
+import java.util.List;
 import java.util.ResourceBundle;
 
-/*
- Controller for the User Management panel.
- Handles displaying all users and adding new users to the system.
+/**
+ * Controller for the User Management panel.
+ * Supports: Add User, List All Users, View User Details (with booking summary).
  */
 public class UserManagementController implements Initializable {
 
-    // Input fields for adding a new user
-    @FXML private TextField userIdField;   // User ID input
-    @FXML private TextField nameField;     // Name input
-    @FXML private TextField emailField;    // Email input
-    @FXML private ComboBox<String> userTypeCombo; // Dropdown for Student/Staff/Guest
+    // ── Add-User form ─────────────────────────────────────────────────────────
+    @FXML private TextField       userIdField;
+    @FXML private TextField       nameField;
+    @FXML private TextField       emailField;
+    @FXML private ComboBox<String> userTypeCombo;
 
-    // Table to display all registered users
-    @FXML private TableView<User> userTableView;
-    @FXML private TableColumn<User, String> colUserId;
-    @FXML private TableColumn<User, String> colName;
-    @FXML private TableColumn<User, String> colEmail;
-    @FXML private TableColumn<User, String> colType;
+    // ── User table ────────────────────────────────────────────────────────────
+    @FXML private TableView<User>          userTableView;
+    @FXML private TableColumn<User,String> colUserId;
+    @FXML private TableColumn<User,String> colName;
+    @FXML private TableColumn<User,String> colEmail;
+    @FXML private TableColumn<User,String> colType;
 
-    // Label to display success/error messages
+    // ── View-User-Details area ────────────────────────────────────────────────
+    @FXML private TextField viewUserIdField;   // user types an ID to look up
+    @FXML private Label     detailsLabel;      // shows the user info + booking summary
+
+    // ── Status message ────────────────────────────────────────────────────────
     @FXML private Label statusLabel;
 
-    // Observable list that the TableView watches for changes
     private final ObservableList<User> userList = FXCollections.observableArrayList();
 
-    /*
-     Called automatically when the panel loads.
-     Sets up table columns, populates the type dropdown,
-     loads existing users from CSV, and connects the list to the table.
-     */
     @Override
     public void initialize(URL location, ResourceBundle resources) {
         configureTableColumns();
         userTypeCombo.getItems().addAll("Student", "Staff", "Guest");
-        loadInitialUsers();
+        userList.addAll(SystemData.getInstance().getUsers());
         userTableView.setItems(userList);
+
+        // Clicking a row in the table auto-fills the View Details field
+        userTableView.getSelectionModel().selectedItemProperty().addListener(
+                (obs, oldVal, newVal) -> {
+                    if (newVal != null && viewUserIdField != null) {
+                        viewUserIdField.setText(newVal.getUserId());
+                    }
+                }
+        );
     }
 
-    /*
-     Links each table column to the corresponding field in the User class
-     using PropertyValueFactory which calls the getter methods automatically.
-     For example colType uses getUserType() from the User class.
-     */
     private void configureTableColumns() {
         colUserId.setCellValueFactory(new PropertyValueFactory<>("userId"));
-        colName.setCellValueFactory(new PropertyValueFactory<>("name"));
-        colEmail.setCellValueFactory(new PropertyValueFactory<>("email"));
-        colType.setCellValueFactory(new PropertyValueFactory<>("userType"));
+        colName  .setCellValueFactory(new PropertyValueFactory<>("name"));
+        colEmail .setCellValueFactory(new PropertyValueFactory<>("email"));
+        colType  .setCellValueFactory(new PropertyValueFactory<>("userType"));
     }
 
-    /*
-     Loads the initial users from SystemData which reads from users.csv at startup.
-     This ensures the table is pre-populated when the panel first opens.
-     */
-    private void loadInitialUsers() {
-        userList.addAll(service.SystemData.getInstance().getUsers());
-    }
+    // ── Add User ──────────────────────────────────────────────────────────────
 
-    /*
-     Handles the Add User button click.
-     Validates all input fields, checks for duplicate user IDs,
-     creates the correct user subclass, and adds to the system.
-     Booking limits are enforced automatically by user type:
-     - Student: max 3 confirmed bookings
-     - Staff: max 5 confirmed bookings
-     - Guest: max 1 confirmed booking
-     */
     @FXML
     private void handleAddUser() {
         String userId = userIdField.getText().trim();
-        String name = nameField.getText().trim();
-        String email = emailField.getText().trim();
-        String type = userTypeCombo.getValue();
+        String name   = nameField.getText().trim();
+        String email  = emailField.getText().trim();
+        String type   = userTypeCombo.getValue();
 
-        // Validate that all fields are filled in
         if (userId.isEmpty() || name.isEmpty() || email.isEmpty() || type == null) {
             statusLabel.setText("Please fill in all fields.");
             return;
         }
 
-        // Check for duplicate user ID
-        for (User u : userList) {
-            if (u.getUserId().equals(userId)) {
-                statusLabel.setText("User ID already exists!");
-                return;
-            }
+        if (SystemData.getInstance().userIdExists(userId)) {
+            statusLabel.setText("User ID already exists!");
+            return;
         }
 
-        // Create the correct subclass based on selected type
         User newUser = switch (type) {
             case "Student" -> new Student(userId, name, email);
-            case "Staff" -> new Staff(userId, name, email);
-            case "Guest" -> new Guest(userId, name, email);
-            default -> null;
+            case "Staff"   -> new Staff(userId, name, email);
+            case "Guest"   -> new Guest(userId, name, email);
+            default        -> null;
         };
 
         if (newUser != null) {
-            // Add to SystemData so other panels can access the new user
-            service.SystemData.getInstance().addUser(newUser);
-            // Add to the observable list so the table updates immediately
+            SystemData.getInstance().addUser(newUser);
             userList.add(newUser);
             statusLabel.setText("User " + userId + " added successfully!");
-
-            // Clear all input fields after successful add
             userIdField.clear();
             nameField.clear();
             emailField.clear();
             userTypeCombo.getSelectionModel().clearSelection();
         }
+    }
+
+    // ── View User Details ─────────────────────────────────────────────────────
+
+    @FXML
+    private void handleViewUserDetails() {
+        String lookupId = viewUserIdField.getText().trim();
+        if (lookupId.isEmpty()) {
+            detailsLabel.setText("Enter a User ID or select a user from the table.");
+            return;
+        }
+
+        User user = SystemData.getInstance().findUserById(lookupId);
+        if (user == null) {
+            detailsLabel.setText("No user found with ID: " + lookupId);
+            return;
+        }
+
+        // Build booking summary
+        List<Booking> userBookings =
+                SystemData.getInstance().getBookingService().getBookingsForUser(lookupId);
+
+        long confirmed  = userBookings.stream().filter(b -> "Confirmed" .equals(b.getBookingStatus())).count();
+        long waitlisted = userBookings.stream().filter(b -> "Waitlisted".equals(b.getBookingStatus())).count();
+        long cancelled  = userBookings.stream().filter(b -> "Cancelled" .equals(b.getBookingStatus())).count();
+
+        StringBuilder sb = new StringBuilder();
+        sb.append("User ID : ").append(user.getUserId()).append("\n");
+        sb.append("Name    : ").append(user.getName()).append("\n");
+        sb.append("Email   : ").append(user.getEmail()).append("\n");
+        sb.append("Type    : ").append(user.getUserType())
+                .append("  (max ").append(user.getMaxBookings()).append(" confirmed bookings)\n\n");
+        sb.append("── Booking Summary ──────────────────\n");
+        sb.append("Confirmed  : ").append(confirmed).append("\n");
+        sb.append("Waitlisted : ").append(waitlisted).append("\n");
+        sb.append("Cancelled  : ").append(cancelled).append("\n\n");
+
+        if (!userBookings.isEmpty()) {
+            sb.append("── Booking List ─────────────────────\n");
+            for (Booking b : userBookings) {
+                sb.append(b.getBookingId())
+                        .append("  Event: ").append(b.getEventId())
+                        .append("  Status: ").append(b.getBookingStatus())
+                        .append("\n");
+            }
+        }
+
+        detailsLabel.setText(sb.toString());
     }
 }
