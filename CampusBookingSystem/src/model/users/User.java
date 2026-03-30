@@ -30,6 +30,8 @@ public abstract class User {
 
     public abstract String getUserType();
 
+    //toString takes all variables into a string format
+    //uses getusertype from each subclass to get the correct usertype
     @Override
     public String toString() {
         return getUserType() + " | " + userId + " | " + name + " | " + email;
