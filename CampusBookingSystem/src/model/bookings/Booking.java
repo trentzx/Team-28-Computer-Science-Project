@@ -3,6 +3,7 @@ package model.bookings;
 import java.time.LocalDateTime;
 
 public class Booking {
+    //variables for booking class
     private String bookingId;
     private String userId;
     private String eventId;
@@ -33,6 +34,7 @@ public class Booking {
     public String getBookingStatus() { return bookingStatus; }
     public void setBookingStatus(String bookingStatus) { this.bookingStatus = bookingStatus; }
 
+    //returns all variables into a string
     @Override
     public String toString() {
         return bookingId + " | " + userId + " | " + eventId + " | " + bookingStatus;
