@@ -1,7 +1,7 @@
 package model.events;
 
 public abstract class Event {
-    //Atritbutes
+    //all variables declared for superclass
     private String eventId;
     private String title;
     private String dateTime;
@@ -9,7 +9,7 @@ public abstract class Event {
     private int capacity;
     private String status;
 
-    //Constructor
+    //Constructor for superclass and to be used with super variable for subclass constructors
     public Event(String eventId, String title, String dateTime, String location, int capacity, String status) {
         this.eventId = eventId;
         this.title = title;
@@ -34,6 +34,7 @@ public abstract class Event {
 
     public int getCapacity() { return capacity; }
     public void setCapacity(int capacity) {
+        //makes sure it has a capacity of greater than 0
         if (capacity <= 0) throw new IllegalArgumentException("Capacity must be > 0");
         this.capacity = capacity;
     }
@@ -44,6 +45,8 @@ public abstract class Event {
     public abstract String getEventType();
     public abstract String getTypeSpecificField();
 
+    //returns entire statement with each variable for superclass
+    //has geteventtype to get the variable from the required subclass
     @Override
     public String toString() {
         return getEventType() + " | " + eventId + " | " + title + " | " + dateTime + " | " + location + " | " + capacity + " | " + status;
