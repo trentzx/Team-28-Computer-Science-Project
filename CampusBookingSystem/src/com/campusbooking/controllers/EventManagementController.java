@@ -78,6 +78,7 @@ public class EventManagementController implements Initializable {
         formEventType.valueProperty().addListener((obs, o, type) -> updateTypeLabel(type));
     }
 
+    //Creates columns for each category
     private void configureTableColumns() {
         colId      .setCellValueFactory(new PropertyValueFactory<>("eventId"));
         colTitle   .setCellValueFactory(new PropertyValueFactory<>("title"));
@@ -130,6 +131,7 @@ public class EventManagementController implements Initializable {
         String eventType  = formEventType.getValue();
         String specific   = formTypeSpecific.getText().trim();
 
+        // If the fields are empty
         if (eventId.isEmpty() || title.isEmpty() || dateTime.isEmpty()
                 || location.isEmpty() || capacityTx.isEmpty()
                 || eventType == null || specific.isEmpty()) {
@@ -137,15 +139,19 @@ public class EventManagementController implements Initializable {
             return;
         }
 
+        // If the capacity is too high
         int capacity;
         try {
             capacity = Integer.parseInt(capacityTx);
+            // Throws NumberFormat exception
             if (capacity <= 0) throw new NumberFormatException();
         } catch (NumberFormatException e) {
+            // Message in case of exception
             statusLabel.setText("Capacity must be a positive integer.");
             return;
         }
 
+        // If the event ID already exists
         if (SystemData.getInstance().eventIdExists(eventId)) {
             statusLabel.setText("Event ID already exists!");
             return;
@@ -248,10 +254,12 @@ public class EventManagementController implements Initializable {
             return;
         }
 
+        // The selected Event
         String eventId = selected.getEventId();
         List<String> confirmed  = SystemData.getInstance().getBookingService().getConfirmedRoster(eventId);
         List<String> waitlisted = SystemData.getInstance().getBookingService().getWaitlist(eventId);
 
+        // Prints out the title, status, and capacity
         StringBuilder sb = new StringBuilder();
         sb.append("Roster for: ").append(selected.getTitle())
                 .append(" (").append(eventId).append(")\n");
