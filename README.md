@@ -30,3 +30,22 @@
 - `users.csv` — userId, name, email, userType
 - `events.csv` — eventId, title, dateTime, location, capacity, status, eventType, topic, speakerName, ageRestriction
 - `bookings.csv` — bookingId, userId, eventId, createdAt, bookingStatus
+
+## Running the JUnit Test Suite
+
+### Requirements
+- IntelliJ IDEA
+- JUnit Jupiter 5.10.0 (added via Maven in Project Structure)
+
+### How to Run
+1. Open the project in IntelliJ IDEA
+2. Navigate to the `test` folder in the project panel
+3. Right click `BookingServiceTest`
+4. Click **Run 'BookingServiceTest'**
+5. The results panel will open at the bottom of the screen
+
+### What the Tests Cover
+- **testBookingUnderCapacity** — verifies that a booking is Confirmed when the event has available capacity
+- **testBookingWhenFull** — verifies that a booking is Waitlisted when the event is at capacity
+- **testWaitlistPromotion** — verifies that the first waitlisted user is automatically promoted to Confirmed when a confirmed booking is cancelled
+- **testDuplicateBookingPrevented** — verifies that a user cannot book the same event twice
